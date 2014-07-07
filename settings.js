@@ -112,6 +112,9 @@ module.exports = {
     // can be accessed in a function block as:
     //    context.global.os
 
+    // The following property can be used to disable running the flow, AKA head-only mode
+    //headOnly: true,
+
     functionGlobalContext: { }
     //functionGlobalContext: { bonescript:require('bonescript') }
     //functionGlobalContext: { arduino:require('duino') }

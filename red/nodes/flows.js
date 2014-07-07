@@ -23,6 +23,7 @@ var log = require("../log");
 var events = require("../events");
 
 var storage = null;
+var headOnly = false;
 
 var nodes = {};
 var activeConfig = [];
@@ -43,6 +44,10 @@ events.on('type-registered',function(type) {
 
 
 var parseConfig = function() {
+    if (headOnly === true) {
+	return;
+    }
+
     var i;
     var nt;
     missingTypes = [];
@@ -92,15 +97,19 @@ var parseConfig = function() {
 
 
 function stopFlows() {
-    if (activeConfig&&activeConfig.length > 0) {
+    if (activeConfig&&activeConfig.length > 0 &&
+        headOnly === false) {
         util.log("[red] Stopping flows");
     }
     return flowNodes.clear();
 }
 
 var flowNodes = module.exports = {
-    init: function(_storage) {
+    init: function(_storage, _headOnly) {
         storage = _storage;
+        if (_headOnly === true) {
+            headOnly = true;
+        }
     },
     load: function() {
         return storage.getFlows().then(function(flows) {
