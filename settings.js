@@ -115,6 +115,10 @@ module.exports = {
     // The following property can be used to disable running the flow, AKA head-only mode
     //headOnly: true,
 
+    // The following property can be used to hide some types of nodes
+    // from the flows.json on RED canvas
+    //hideNodeTypes: ['function', 'template'],
+
     functionGlobalContext: { }
     //functionGlobalContext: { bonescript:require('bonescript') }
     //functionGlobalContext: { arduino:require('duino') }

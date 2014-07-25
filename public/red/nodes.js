@@ -284,6 +284,70 @@ RED.nodes = function() {
                 //"DO NOT DEPLOY while in this state.<br/>Either, add missing types to Node-RED, restart and then reload page,<br/>or delete unknown "+n.name+", rewire as required, and then deploy.","error");
             }
 
+            // 10. hide some types of nodes
+            //
+            // 10.10 find all nodes needed to hide, save these nodes'
+            //       downstream relationships, and delete these nodes
+            //       from canvas
+            var typesToHide = RED.settings.hideNodeTypes,
+                hiddenNodeWires = {};
+
+            (function() {
+                if (Array.isArray(typesToHide) && typesToHide.length <= 0) {
+                    return;
+                }
+
+                newNodes.forEach(function(node, index, array) {
+                    if (typesToHide.indexOf(node.type) >= 0) {
+                        hiddenNodeWires[node.id] = node.wires;
+                        delete newNodes[index];
+                    }
+                });
+            })();
+
+            // 10.20 define a function to recursively connect the
+            //       `origin` node to non-hiden nodes
+            function addNonHidenLink(origin, target) {
+                if (Array.isArray(target)) {
+                    for (var i in target) {
+                        addNonHidenLink(origin, target[i]);
+                    }
+                }
+                else {
+                    if (hiddenNodeWires.hasOwnProperty(target)) {
+                        addNonHidenLink(origin, hiddenNodeWires[target]);
+                    }
+                    else {
+                        if (origin.indexOf(target) < 0) {
+                            origin.push(target);
+                        }
+                    }
+                }
+            }
+
+            // 10.30 modify the links of non-hiden nodes
+            (function() {
+
+                if (hiddenNodeWires.length <= 0) {
+                    return;
+                }
+
+                newNodes.forEach(function(node, index, array) {
+
+                    if (node.wires) {
+                        node.wires.forEach(function(wires, i, array) {
+                            wires.forEach(function(wire, j, array) {
+                                if (hiddenNodeWires.hasOwnProperty(wire)) {
+                                    addNonHidenLink(node.wires[i], hiddenNodeWires[wire]);
+                                    delete node.wires[i][j];
+                                }
+                            });
+                        });
+                    }
+                });
+            })();
+            // end hide some types of nodes
+
             for (var i in newNodes) {
                 var n = newNodes[i];
                 // TODO: remove workspace in next release+1
