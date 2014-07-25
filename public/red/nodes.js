@@ -293,7 +293,7 @@ RED.nodes = function() {
                 hiddenNodeWires = {};
 
             (function() {
-                if (Array.isArray(typesToHide) && typesToHide.length <= 0) {
+                if (!Array.isArray(typesToHide) || typesToHide.length <= 0) {
                     return;
                 }
 
