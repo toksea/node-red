@@ -470,7 +470,7 @@ a.brand img {
 }
 
 .link_line {
-  stroke: #7f7f7f;
+  stroke: #ddd;
   stroke-width: 4;
   fill: none;
   pointer-events: none;
