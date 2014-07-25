@@ -119,6 +119,9 @@ module.exports = {
     // from the flows.json on RED canvas
     //hideNodeTypes: ['function', 'template'],
 
+    // The following property can be used to hide the palette
+    //hidePalette: true,
+
     functionGlobalContext: { }
     //functionGlobalContext: { bonescript:require('bonescript') }
     //functionGlobalContext: { arduino:require('duino') }

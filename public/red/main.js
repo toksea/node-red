@@ -138,9 +138,20 @@ var RED = function() {
     function loadSettings() {
         $.get('settings', function(data) {
             RED.settings = data;
+
+            reLayout();
+
             loadNodes();
         });
     }
+
+    function reLayout() {
+        if (RED.settings.hidePalette) {
+            $('#palette').hide();
+            $('#workspace').css('left', '10px');
+        }
+    }
+
     function loadNodes() {
         $.get('nodes', function(data) {
             $("body").append(data);

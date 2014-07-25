@@ -64,7 +64,8 @@ function setupUI(settings) {
     app.get("/settings", function(req,res) {
         var safeSettings = {
             httpNodeRoot: settings.httpNodeRoot,
-            hideNodeTypes: settings.hideNodeTypes
+            hideNodeTypes: settings.hideNodeTypes,
+            hidePalette: settings.hidePalette
         };
         res.json(safeSettings);
     });
